@@ -53,8 +53,10 @@
     </Compile>
     <Compile Include="MediaInfoDLL.cs" />
     <Compile Include="MediaInfoFunctions.cs" />
+    <Compile Include="MovieFile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools.cs" />
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>

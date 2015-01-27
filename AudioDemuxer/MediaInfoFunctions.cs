@@ -35,7 +35,7 @@ namespace MediaInfoLib
             get { return this.Count_Get(StreamKind.Other); }
         }
 
-        private string getAudioInfo (int TrackNumber, string Parameter)
+        public string getAudioInfo (int TrackNumber, string Parameter)
         {
             if (TrackNumber >= this.AudioTracksCount)
                 return "NumberOutOfRange";
@@ -64,6 +64,11 @@ namespace MediaInfoLib
                 return "NumberOutOfRange";
             else
                 return this.Get(StreamKind.Video, TrackNumber, "Format"); 
+        }
+
+        public string getTrackID(StreamKind Format, int Nth)
+        {
+            return this.Get(Format, Nth, "ID");
         }
 
     }

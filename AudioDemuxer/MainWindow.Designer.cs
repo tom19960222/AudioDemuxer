@@ -31,17 +31,17 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabpage_SingleFileDemuxWithChoose = new System.Windows.Forms.TabPage();
             this.gridview_Tracks = new System.Windows.Forms.DataGridView();
-            this.WantToDemux = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.TrackNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Format = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BitDepth = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Channels = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txt_CommandLine = new System.Windows.Forms.TextBox();
             this.label_CommandLine = new System.Windows.Forms.Label();
             this.btn_Start = new System.Windows.Forms.Button();
             this.btn_Browse = new System.Windows.Forms.Button();
             this.tabpage_BatchDemuxAll = new System.Windows.Forms.TabPage();
             this.OFD_InputFile = new System.Windows.Forms.OpenFileDialog();
+            this.WantToDemux = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.TrackNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Format = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BitDepth = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Channels = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl.SuspendLayout();
             this.tabpage_SingleFileDemuxWithChoose.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridview_Tracks)).BeginInit();
@@ -49,6 +49,9 @@
             // 
             // tabControl
             // 
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.tabpage_SingleFileDemuxWithChoose);
             this.tabControl.Controls.Add(this.tabpage_BatchDemuxAll);
             this.tabControl.Location = new System.Drawing.Point(0, 0);
@@ -97,47 +100,10 @@
             this.gridview_Tracks.Size = new System.Drawing.Size(674, 192);
             this.gridview_Tracks.TabIndex = 5;
             // 
-            // WantToDemux
-            // 
-            this.WantToDemux.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.WantToDemux.HeaderText = "Demux?";
-            this.WantToDemux.Name = "WantToDemux";
-            this.WantToDemux.Width = 50;
-            // 
-            // TrackNumber
-            // 
-            this.TrackNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.TrackNumber.HeaderText = "No.";
-            this.TrackNumber.Name = "TrackNumber";
-            this.TrackNumber.ReadOnly = true;
-            this.TrackNumber.Width = 47;
-            // 
-            // Format
-            // 
-            this.Format.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Format.HeaderText = "Format";
-            this.Format.Name = "Format";
-            this.Format.ReadOnly = true;
-            this.Format.Width = 63;
-            // 
-            // BitDepth
-            // 
-            this.BitDepth.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.BitDepth.HeaderText = "Bit Depth";
-            this.BitDepth.Name = "BitDepth";
-            this.BitDepth.ReadOnly = true;
-            this.BitDepth.Width = 75;
-            // 
-            // Channels
-            // 
-            this.Channels.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Channels.HeaderText = "Channels";
-            this.Channels.Name = "Channels";
-            this.Channels.ReadOnly = true;
-            this.Channels.Width = 73;
-            // 
             // txt_CommandLine
             // 
+            this.txt_CommandLine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txt_CommandLine.Location = new System.Drawing.Point(56, 233);
             this.txt_CommandLine.Name = "txt_CommandLine";
             this.txt_CommandLine.Size = new System.Drawing.Size(627, 22);
@@ -161,6 +127,7 @@
             this.btn_Start.TabIndex = 1;
             this.btn_Start.Text = "開始";
             this.btn_Start.UseVisualStyleBackColor = true;
+            this.btn_Start.Click += new System.EventHandler(this.btn_Start_Click);
             // 
             // btn_Browse
             // 
@@ -188,6 +155,45 @@
     "V檔 (*.mkv)|*.mkv|M2TS / TS檔 (*.m2ts, *.ts)|*.m2ts;*.ts";
             this.OFD_InputFile.RestoreDirectory = true;
             this.OFD_InputFile.FileOk += new System.ComponentModel.CancelEventHandler(this.OFD_InputFile_FileOk);
+            // 
+            // WantToDemux
+            // 
+            this.WantToDemux.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.WantToDemux.HeaderText = "Demux?";
+            this.WantToDemux.Name = "WantToDemux";
+            this.WantToDemux.Width = 50;
+            // 
+            // TrackNumber
+            // 
+            this.TrackNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.TrackNumber.HeaderText = "Track No.";
+            this.TrackNumber.Name = "TrackNumber";
+            this.TrackNumber.ReadOnly = true;
+            this.TrackNumber.Width = 77;
+            // 
+            // Format
+            // 
+            this.Format.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Format.HeaderText = "Format";
+            this.Format.Name = "Format";
+            this.Format.ReadOnly = true;
+            this.Format.Width = 63;
+            // 
+            // BitDepth
+            // 
+            this.BitDepth.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.BitDepth.HeaderText = "Bit Depth";
+            this.BitDepth.Name = "BitDepth";
+            this.BitDepth.ReadOnly = true;
+            this.BitDepth.Width = 75;
+            // 
+            // Channels
+            // 
+            this.Channels.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Channels.HeaderText = "Channels";
+            this.Channels.Name = "Channels";
+            this.Channels.ReadOnly = true;
+            this.Channels.Width = 73;
             // 
             // form_MainWindow
             // 
