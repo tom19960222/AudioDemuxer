@@ -20,7 +20,7 @@ namespace AudioDemuxer
             {
                 string Command = String.Empty;
                 foreach (DictionaryEntry Pair in TrackID_SourceFileName_Pair)
-                    Command += String.Format("\"{0}{1}\" -raw {2} \"{3}\"{4}", ToolsBaseDirectory, BinaryFileName, ((int)Pair.Key + 1).ToString(), Pair.Value.ToString(), Environment.NewLine);
+                    Command += String.Format("\"{0}{1}\" -raw {2} \"{3}\"{4}", ToolsBaseDirectory, BinaryFileName, Pair.Key.ToString(), Pair.Value.ToString(), Environment.NewLine);
                 return Command;
             }
         }
