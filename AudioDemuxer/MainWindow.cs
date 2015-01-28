@@ -49,10 +49,12 @@ namespace AudioDemuxer
 
         private void btn_Start_Click(object sender, EventArgs e)
         {
+            ListDictionary TrackID_SourceFileName = new ListDictionary();
+            ListDictionary TrackID_OutputFileName = new ListDictionary();
             switch(nowFile.FileExtension.ToUpper())
             {
+                   
                 case "MP4":
-                    ListDictionary TrackID_SourceFileName = new ListDictionary();
                     foreach(DataGridViewRow Row in gridview_Tracks.Rows)
                     {
                         DataGridViewCheckBoxCell CCell = Row.Cells[0] as DataGridViewCheckBoxCell;
@@ -62,7 +64,6 @@ namespace AudioDemuxer
                     txt_CommandLine.Text = AudioDemuxer.Tools.MP4Box.CommandBuilder(TrackID_SourceFileName);
                 break;
                 case "MKV":
-                    ListDictionary TrackID_OutputFileName = new ListDictionary();
                     foreach(DataGridViewRow Row in gridview_Tracks.Rows)
                     {
                         DataGridViewCheckBoxCell CCell = Row.Cells[0] as DataGridViewCheckBoxCell;
@@ -72,6 +73,18 @@ namespace AudioDemuxer
                     txt_CommandLine.Text = AudioDemuxer.Tools.MKVExtract.CommandBuilder(TrackID_OutputFileName, nowFile.FileName);
                 break;
                 case "M2TS":
+                    string OutputFormat = "flac";
+                    foreach(DataGridViewRow Row in gridview_Tracks.Rows)
+                    {
+                        DataGridViewCheckBoxCell CCell = Row.Cells[0] as DataGridViewCheckBoxCell;
+                        if ((bool)CCell.Value)
+                        {
+                            int OutputTrackID = Row.Cells[1].RowIndex + nowFile.VideoTracksCount + 1;
+                            TrackID_OutputFileName.Add(OutputTrackID.ToString(), String.Format("{0}\\{1}-track{2}.{3}", nowFile.FileFolder, nowFile.SafeFileNameWithoutExtension, OutputTrackID.ToString(), OutputFormat));
+                        }
+                    }
+                    txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.CommandBuilder(TrackID_OutputFileName, nowFile.FileName);
+                    //txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.AnalyseByEac3to(nowFile.FileName);
                 break;
                 case "TS":
                 break;
