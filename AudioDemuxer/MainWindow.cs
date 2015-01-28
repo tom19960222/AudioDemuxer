@@ -51,9 +51,10 @@ namespace AudioDemuxer
         {
             ListDictionary TrackID_SourceFileName = new ListDictionary();
             ListDictionary TrackID_OutputFileName = new ListDictionary();
+            string OutputFormat = "flac";
+            IDemuxProcess DP;
             switch(nowFile.FileExtension.ToUpper())
-            {
-                   
+            {       
                 case "MP4":
                     foreach(DataGridViewRow Row in gridview_Tracks.Rows)
                     {
@@ -62,6 +63,9 @@ namespace AudioDemuxer
                             TrackID_SourceFileName.Add(Row.Cells[1].Value, nowFile.FileName);
                     }
                     txt_CommandLine.Text = AudioDemuxer.Tools.MP4Box.CommandBuilder(TrackID_SourceFileName);
+                    DP = new Tools.MP4Box.MP4DemuxProcess(TrackID_SourceFileName);
+                    DP.Start();
+                    DP.Dispose();
                 break;
                 case "MKV":
                     foreach(DataGridViewRow Row in gridview_Tracks.Rows)
@@ -71,9 +75,11 @@ namespace AudioDemuxer
                             TrackID_OutputFileName.Add(Row.Cells[1].Value, String.Format("{0}\\{1}-track{2}.{3}",nowFile.FileFolder, nowFile.SafeFileNameWithoutExtension, Row.Cells[1].Value.ToString(), Row.Cells[2].Value.ToString().ToLower()));
                     }
                     txt_CommandLine.Text = AudioDemuxer.Tools.MKVExtract.CommandBuilder(TrackID_OutputFileName, nowFile.FileName);
+                    DP = new Tools.MKVExtract.MKVDemuxProcess(TrackID_OutputFileName, nowFile.FileName);
+                    DP.Start();
+                    DP.Dispose();
                 break;
                 case "M2TS":
-                    string OutputFormat = "flac";
                     foreach(DataGridViewRow Row in gridview_Tracks.Rows)
                     {
                         DataGridViewCheckBoxCell CCell = Row.Cells[0] as DataGridViewCheckBoxCell;
@@ -85,8 +91,25 @@ namespace AudioDemuxer
                     }
                     txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.CommandBuilder(TrackID_OutputFileName, nowFile.FileName);
                     //txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.AnalyseByEac3to(nowFile.FileName);
+                    DP = new Tools.eac3to.M2TSDemuxProcess(TrackID_OutputFileName, nowFile.FileName);
+                    DP.Start();
+                    DP.Dispose();
                 break;
                 case "TS":
+                    foreach(DataGridViewRow Row in gridview_Tracks.Rows)
+                    {
+                        DataGridViewCheckBoxCell CCell = Row.Cells[0] as DataGridViewCheckBoxCell;
+                        if ((bool)CCell.Value)
+                        {
+                            int OutputTrackID = Row.Cells[1].RowIndex + nowFile.VideoTracksCount + 1;
+                            TrackID_OutputFileName.Add(OutputTrackID.ToString(), String.Format("{0}\\{1}-track{2}.{3}", nowFile.FileFolder, nowFile.SafeFileNameWithoutExtension, OutputTrackID.ToString(), Row.Cells[2].Value.ToString().ToLower()));
+                        }
+                    }
+                    txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.CommandBuilder(TrackID_OutputFileName, nowFile.FileName);
+                    //txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.AnalyseByEac3to(nowFile.FileName);
+                    DP = new Tools.eac3to.TSDemuxProcess(TrackID_OutputFileName, nowFile.FileName);
+                    DP.Start();
+                    DP.Dispose();
                 break;
             }
             
