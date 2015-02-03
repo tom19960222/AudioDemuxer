@@ -198,7 +198,7 @@ namespace AudioDemuxer
                     else
                     {
                         foreach (AudioTrackInfo Info in File.AudioTrackInfoList)
-                            TrackID_OutputFileName.Add((Info.Index + File.VideoTracksCount + 1).ToString(), String.Format("{0}\\{1}-track{2}.{3}", File.FileFolder, File.SafeFileNameWithoutExtension, (Info.Index + File.VideoTracksCount + 1).ToString(), OutputFormat));
+                            TrackID_OutputFileName.Add(Info.Index.ToString(), String.Format("{0}\\{1}-track{2}.{3}", File.FileFolder, File.SafeFileNameWithoutExtension, Info.Index.ToString(), OutputFormat));
                     }
                     //txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.CommandBuilder(TrackID_OutputFileName, File.FileName);
                     //txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.AnalyseByEac3to(nowFile.FileName);
@@ -222,7 +222,7 @@ namespace AudioDemuxer
                     else
                     {
                         foreach (AudioTrackInfo Info in File.AudioTrackInfoList)
-                            TrackID_OutputFileName.Add((Info.Index + File.VideoTracksCount + 1).ToString(), String.Format("{0}\\{1}-track{2}.{3}", File.FileFolder, File.SafeFileNameWithoutExtension, (Info.Index + File.VideoTracksCount + 1).ToString(), Info.Format.ToLower()));
+                            TrackID_OutputFileName.Add(Info.Index.ToString(), String.Format("{0}\\{1}-track{2}.{3}", File.FileFolder, File.SafeFileNameWithoutExtension, Info.Index.ToString(), Info.Format.ToLower()));
                     }
                     //txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.CommandBuilder(TrackID_OutputFileName, File.FileName);
                     //txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.AnalyseByEac3to(nowFile.FileName);

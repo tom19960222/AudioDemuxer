@@ -30,6 +30,7 @@ namespace AudioDemuxer
             if (!int.TryParse(Channels, out this._Channels))
                 _Channels = 0;
             _Format = Format;
+            _Index = Index;
         }
     }
 }
