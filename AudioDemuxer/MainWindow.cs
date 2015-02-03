@@ -277,5 +277,33 @@ namespace AudioDemuxer
             }
             lv_WaitingFileList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
+
+        private void btn_Clear_Listview_Click(object sender, EventArgs e)
+        {
+            lv_WaitingFileList.Items.Clear();
+        }
+
+        private void btn_Clear_Finished_Click(object sender, EventArgs e)
+        {
+            /*for(int i = 0; i < lv_WaitingFileList.Items.Count; i++)
+            {
+                if (lv_WaitingFileList.Items[i].Text.Equals("Started"))
+                    lv_WaitingFileList.Items.RemoveAt(i);
+            }*/
+            foreach(ListViewItem LVI in lv_WaitingFileList.Items)
+            {
+                if (LVI.Text.Equals("Started"))
+                    lv_WaitingFileList.Items.Remove(LVI);
+            }
+        }
+
+        private void btn_Remove_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < lv_WaitingFileList.Items.Count; i++)
+            {
+                if (lv_WaitingFileList.Items[i].Selected)
+                    lv_WaitingFileList.Items.RemoveAt(i);
+            }
+        }
     }
 }

@@ -80,7 +80,7 @@ namespace AudioDemuxer
             public static string ParameterBuilder(ListDictionary TrackID_OutputFileName_Pair, string SourceFileName)
             {
                 string Parameter = String.Empty;
-                Parameter += SourceFileName;
+                Parameter += "\""+SourceFileName+"\"";
                 foreach (DictionaryEntry Pair in TrackID_OutputFileName_Pair)
                     Parameter += String.Format(" {0}:\"{1}\" ", Pair.Key.ToString(), Pair.Value.ToString());
                 return Parameter;

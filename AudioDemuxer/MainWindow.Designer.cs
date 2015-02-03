@@ -47,6 +47,9 @@
             this.lvheader_Status = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvheader_FileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.OFD_InputFile = new System.Windows.Forms.OpenFileDialog();
+            this.btn_Clear_Listview = new System.Windows.Forms.Button();
+            this.btn_Clear_Finished = new System.Windows.Forms.Button();
+            this.btn_Remove = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tabpage_SingleFileDemuxWithChoose.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridview_Tracks)).BeginInit();
@@ -64,7 +67,7 @@
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(701, 372);
+            this.tabControl.Size = new System.Drawing.Size(701, 385);
             this.tabControl.TabIndex = 0;
             // 
             // tabpage_SingleFileDemuxWithChoose
@@ -78,7 +81,7 @@
             this.tabpage_SingleFileDemuxWithChoose.Location = new System.Drawing.Point(4, 22);
             this.tabpage_SingleFileDemuxWithChoose.Name = "tabpage_SingleFileDemuxWithChoose";
             this.tabpage_SingleFileDemuxWithChoose.Padding = new System.Windows.Forms.Padding(3);
-            this.tabpage_SingleFileDemuxWithChoose.Size = new System.Drawing.Size(693, 346);
+            this.tabpage_SingleFileDemuxWithChoose.Size = new System.Drawing.Size(693, 359);
             this.tabpage_SingleFileDemuxWithChoose.TabIndex = 0;
             this.tabpage_SingleFileDemuxWithChoose.Text = "單檔Demux";
             // 
@@ -104,7 +107,7 @@
             this.gridview_Tracks.Name = "gridview_Tracks";
             this.gridview_Tracks.RowHeadersVisible = false;
             this.gridview_Tracks.RowTemplate.Height = 24;
-            this.gridview_Tracks.Size = new System.Drawing.Size(674, 192);
+            this.gridview_Tracks.Size = new System.Drawing.Size(674, 205);
             this.gridview_Tracks.TabIndex = 5;
             // 
             // WantToDemux
@@ -154,6 +157,7 @@
             this.txt_CommandLine.Name = "txt_CommandLine";
             this.txt_CommandLine.Size = new System.Drawing.Size(627, 22);
             this.txt_CommandLine.TabIndex = 4;
+            this.txt_CommandLine.Visible = false;
             // 
             // label_CommandLine
             // 
@@ -164,6 +168,7 @@
             this.label_CommandLine.Size = new System.Drawing.Size(49, 14);
             this.label_CommandLine.TabIndex = 3;
             this.label_CommandLine.Text = "指令：";
+            this.label_CommandLine.Visible = false;
             // 
             // btn_Start
             // 
@@ -188,20 +193,23 @@
             // tabpage_BatchDemuxAll
             // 
             this.tabpage_BatchDemuxAll.AllowDrop = true;
+            this.tabpage_BatchDemuxAll.Controls.Add(this.btn_Remove);
+            this.tabpage_BatchDemuxAll.Controls.Add(this.btn_Clear_Finished);
+            this.tabpage_BatchDemuxAll.Controls.Add(this.btn_Clear_Listview);
             this.tabpage_BatchDemuxAll.Controls.Add(this.numupdonwn_Parallel_Process);
             this.tabpage_BatchDemuxAll.Controls.Add(this.label__Parallel_Process);
             this.tabpage_BatchDemuxAll.Controls.Add(this.lv_WaitingFileList);
             this.tabpage_BatchDemuxAll.Location = new System.Drawing.Point(4, 22);
             this.tabpage_BatchDemuxAll.Name = "tabpage_BatchDemuxAll";
             this.tabpage_BatchDemuxAll.Padding = new System.Windows.Forms.Padding(3);
-            this.tabpage_BatchDemuxAll.Size = new System.Drawing.Size(693, 346);
+            this.tabpage_BatchDemuxAll.Size = new System.Drawing.Size(693, 359);
             this.tabpage_BatchDemuxAll.TabIndex = 1;
             this.tabpage_BatchDemuxAll.Text = "批次全解";
             this.tabpage_BatchDemuxAll.UseVisualStyleBackColor = true;
             // 
             // numupdonwn_Parallel_Process
             // 
-            this.numupdonwn_Parallel_Process.Location = new System.Drawing.Point(653, 0);
+            this.numupdonwn_Parallel_Process.Location = new System.Drawing.Point(650, 6);
             this.numupdonwn_Parallel_Process.Name = "numupdonwn_Parallel_Process";
             this.numupdonwn_Parallel_Process.Size = new System.Drawing.Size(40, 22);
             this.numupdonwn_Parallel_Process.TabIndex = 0;
@@ -215,7 +223,7 @@
             // label__Parallel_Process
             // 
             this.label__Parallel_Process.AutoSize = true;
-            this.label__Parallel_Process.Location = new System.Drawing.Point(546, 6);
+            this.label__Parallel_Process.Location = new System.Drawing.Point(543, 11);
             this.label__Parallel_Process.Name = "label__Parallel_Process";
             this.label__Parallel_Process.Size = new System.Drawing.Size(101, 12);
             this.label__Parallel_Process.TabIndex = 1;
@@ -227,8 +235,9 @@
             this.lv_WaitingFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.lvheader_Status,
             this.lvheader_FileName});
+            this.lv_WaitingFileList.FullRowSelect = true;
             this.lv_WaitingFileList.GridLines = true;
-            this.lv_WaitingFileList.Location = new System.Drawing.Point(0, 21);
+            this.lv_WaitingFileList.Location = new System.Drawing.Point(3, 31);
             this.lv_WaitingFileList.Name = "lv_WaitingFileList";
             this.lv_WaitingFileList.Size = new System.Drawing.Size(687, 236);
             this.lv_WaitingFileList.TabIndex = 2;
@@ -252,11 +261,41 @@
             this.OFD_InputFile.RestoreDirectory = true;
             this.OFD_InputFile.FileOk += new System.ComponentModel.CancelEventHandler(this.OFD_InputFile_FileOk);
             // 
+            // btn_Clear_Listview
+            // 
+            this.btn_Clear_Listview.Location = new System.Drawing.Point(8, 6);
+            this.btn_Clear_Listview.Name = "btn_Clear_Listview";
+            this.btn_Clear_Listview.Size = new System.Drawing.Size(75, 23);
+            this.btn_Clear_Listview.TabIndex = 3;
+            this.btn_Clear_Listview.Text = "清空列表";
+            this.btn_Clear_Listview.UseVisualStyleBackColor = true;
+            this.btn_Clear_Listview.Click += new System.EventHandler(this.btn_Clear_Listview_Click);
+            // 
+            // btn_Clear_Finished
+            // 
+            this.btn_Clear_Finished.Location = new System.Drawing.Point(89, 6);
+            this.btn_Clear_Finished.Name = "btn_Clear_Finished";
+            this.btn_Clear_Finished.Size = new System.Drawing.Size(75, 23);
+            this.btn_Clear_Finished.TabIndex = 3;
+            this.btn_Clear_Finished.Text = "清理已完成";
+            this.btn_Clear_Finished.UseVisualStyleBackColor = true;
+            this.btn_Clear_Finished.Click += new System.EventHandler(this.btn_Clear_Finished_Click);
+            // 
+            // btn_Remove
+            // 
+            this.btn_Remove.Location = new System.Drawing.Point(170, 6);
+            this.btn_Remove.Name = "btn_Remove";
+            this.btn_Remove.Size = new System.Drawing.Size(75, 23);
+            this.btn_Remove.TabIndex = 3;
+            this.btn_Remove.Text = "移除";
+            this.btn_Remove.UseVisualStyleBackColor = true;
+            this.btn_Remove.Click += new System.EventHandler(this.btn_Remove_Click);
+            // 
             // form_MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(699, 282);
+            this.ClientSize = new System.Drawing.Size(699, 295);
             this.Controls.Add(this.tabControl);
             this.Name = "form_MainWindow";
             this.Text = "AudioDemuxer By 爆頭專家";
@@ -292,6 +331,9 @@
         private System.Windows.Forms.ListView lv_WaitingFileList;
         private System.Windows.Forms.ColumnHeader lvheader_Status;
         private System.Windows.Forms.ColumnHeader lvheader_FileName;
+        private System.Windows.Forms.Button btn_Clear_Finished;
+        private System.Windows.Forms.Button btn_Clear_Listview;
+        private System.Windows.Forms.Button btn_Remove;
 
     }
 }
