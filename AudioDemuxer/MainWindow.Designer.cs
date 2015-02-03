@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
-            "Running",
-            "C:\\temp\\test.mp4"}, -1);
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabpage_SingleFileDemuxWithChoose = new System.Windows.Forms.TabPage();
             this.gridview_Tracks = new System.Windows.Forms.DataGridView();
@@ -44,12 +41,12 @@
             this.btn_Start = new System.Windows.Forms.Button();
             this.btn_Browse = new System.Windows.Forms.Button();
             this.tabpage_BatchDemuxAll = new System.Windows.Forms.TabPage();
-            this.OFD_InputFile = new System.Windows.Forms.OpenFileDialog();
             this.numupdonwn_Parallel_Process = new System.Windows.Forms.NumericUpDown();
             this.label__Parallel_Process = new System.Windows.Forms.Label();
             this.lv_WaitingFileList = new System.Windows.Forms.ListView();
             this.lvheader_Status = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvheader_FileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.OFD_InputFile = new System.Windows.Forms.OpenFileDialog();
             this.tabControl.SuspendLayout();
             this.tabpage_SingleFileDemuxWithChoose.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridview_Tracks)).BeginInit();
@@ -161,7 +158,7 @@
             // label_CommandLine
             // 
             this.label_CommandLine.AutoSize = true;
-            this.label_CommandLine.Font = new System.Drawing.Font("PMingLiU", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label_CommandLine.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label_CommandLine.Location = new System.Drawing.Point(9, 236);
             this.label_CommandLine.Name = "label_CommandLine";
             this.label_CommandLine.Size = new System.Drawing.Size(49, 14);
@@ -202,13 +199,6 @@
             this.tabpage_BatchDemuxAll.Text = "批次全解";
             this.tabpage_BatchDemuxAll.UseVisualStyleBackColor = true;
             // 
-            // OFD_InputFile
-            // 
-            this.OFD_InputFile.Filter = "所有支援格式 (*.mp4, *.mkv, *.m2ts, *.ts)|*.mp4;*.mkv;*.m2ts;*.ts|MP4檔 (*.mp4)|*.mp4|MK" +
-    "V檔 (*.mkv)|*.mkv|M2TS / TS檔 (*.m2ts, *.ts)|*.m2ts;*.ts";
-            this.OFD_InputFile.RestoreDirectory = true;
-            this.OFD_InputFile.FileOk += new System.ComponentModel.CancelEventHandler(this.OFD_InputFile_FileOk);
-            // 
             // numupdonwn_Parallel_Process
             // 
             this.numupdonwn_Parallel_Process.Location = new System.Drawing.Point(653, 0);
@@ -233,18 +223,19 @@
             // 
             // lv_WaitingFileList
             // 
+            this.lv_WaitingFileList.AllowDrop = true;
             this.lv_WaitingFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.lvheader_Status,
             this.lvheader_FileName});
             this.lv_WaitingFileList.GridLines = true;
-            this.lv_WaitingFileList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
             this.lv_WaitingFileList.Location = new System.Drawing.Point(0, 21);
             this.lv_WaitingFileList.Name = "lv_WaitingFileList";
             this.lv_WaitingFileList.Size = new System.Drawing.Size(687, 236);
             this.lv_WaitingFileList.TabIndex = 2;
             this.lv_WaitingFileList.UseCompatibleStateImageBehavior = false;
             this.lv_WaitingFileList.View = System.Windows.Forms.View.Details;
+            this.lv_WaitingFileList.DragDrop += new System.Windows.Forms.DragEventHandler(this.lv_WaitingFileList_DragDrop);
+            this.lv_WaitingFileList.DragEnter += new System.Windows.Forms.DragEventHandler(this.lv_WaitingFileList_DragEnter);
             // 
             // lvheader_Status
             // 
@@ -253,6 +244,13 @@
             // lvheader_FileName
             // 
             this.lvheader_FileName.Text = "檔案路徑";
+            // 
+            // OFD_InputFile
+            // 
+            this.OFD_InputFile.Filter = "所有支援格式 (*.mp4, *.mkv, *.m2ts, *.ts)|*.mp4;*.mkv;*.m2ts;*.ts|MP4檔 (*.mp4)|*.mp4|MK" +
+    "V檔 (*.mkv)|*.mkv|M2TS / TS檔 (*.m2ts, *.ts)|*.m2ts;*.ts";
+            this.OFD_InputFile.RestoreDirectory = true;
+            this.OFD_InputFile.FileOk += new System.ComponentModel.CancelEventHandler(this.OFD_InputFile_FileOk);
             // 
             // form_MainWindow
             // 

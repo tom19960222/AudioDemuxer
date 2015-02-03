@@ -55,7 +55,7 @@ namespace AudioDemuxer
                 string Parameter = String.Empty;
                 Parameter += String.Format(" {0} \"{1}\"", ProgramParameter, SourceFileName);
                 foreach (DictionaryEntry Pair in TrackID_OutputFileName_Pair)
-                    Parameter += String.Format(" {0}:\"{1}\" ", (int.Parse((string)Pair.Key) - 1).ToString(), Pair.Value.ToString());
+                    Parameter += String.Format(" {0}:\"{1}\" ", (Convert.ToInt32(Pair.Key) - 1).ToString(), Pair.Value.ToString());
                 return Parameter;
             }
             public static string CommandBuilder(ListDictionary TrackID_OutputFileName_Pair, string SourceFileName)

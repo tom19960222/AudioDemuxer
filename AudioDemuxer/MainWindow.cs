@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MediaInfoLib;
@@ -15,15 +16,115 @@ namespace AudioDemuxer
 {
     public partial class form_MainWindow : Form
     {
+        delegate bool TabpageFocusedCallback();
+        delegate ListViewItem getFirstPendingListViewItemCallback();
+        delegate void ListViewItemSetTextCallback(ListViewItem LVI, string text);
         MovieFile nowFile;
         string Command = String.Empty;
-        int RunningProcess = 0;
+        List<Thread> RunningProcesses;
+        string[] SupportedFileFormats = new string[] { "MP4", "MKV", "TS", "M2TS" };
+        Thread MainThread, JoinThread, RemoveThread;
+
+        public form_MainWindow()
+        {
+            InitializeComponent();
+            init_Form();
+            tabpage_BatchDemuxAll.Enter += tabpage_BatchDemuxAll_GotFocus;
+            RunningProcesses = new List<Thread>();
+            MainThread = Thread.CurrentThread;
+        }
 
         public void init_Form()
         {
             gridview_Tracks.Rows.Clear();
             txt_CommandLine.Text = String.Empty;
             lv_WaitingFileList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+        }
+
+        void tabpage_BatchDemuxAll_GotFocus(object sender, EventArgs e)
+        {
+            JoinThread = new Thread(MonitorAndJoinRunningProcess);
+            RemoveThread = new Thread(MonitorAndRemoveRunningProcess);
+            JoinThread.IsBackground = true;
+            RemoveThread.IsBackground = true;
+            JoinThread.Start();
+            RemoveThread.Start();
+        }
+
+        bool isTabpageFocused()
+        {
+            if (this.tabpage_BatchDemuxAll.InvokeRequired)
+            {
+                TabpageFocusedCallback C = new TabpageFocusedCallback(isTabpageFocused);
+                return (bool)this.Invoke(C);
+            }
+            else
+                return tabControl.SelectedTab.Equals(tabpage_BatchDemuxAll);
+        }
+
+        ListViewItem getFirstPendingListViewItem()
+        {
+            if (this.lv_WaitingFileList.InvokeRequired)
+            {
+                getFirstPendingListViewItemCallback C = new getFirstPendingListViewItemCallback(getFirstPendingListViewItem);
+                return (ListViewItem)this.Invoke(C);
+            }
+            else
+            {
+                for (int i = 0; i < lv_WaitingFileList.Items.Count; i++)
+                {
+                    if (lv_WaitingFileList.Items[i].Text.Equals("Pending"))
+                        return lv_WaitingFileList.Items[i];
+                }
+                return null;
+            }
+        }
+
+        void setListViewItemText(ListViewItem LVI, string text)
+        {
+            if (this.lv_WaitingFileList.InvokeRequired)
+            {
+                ListViewItemSetTextCallback C = new ListViewItemSetTextCallback(setListViewItemText);
+                this.Invoke(C, new object[] { LVI , text});
+            }
+            else
+                LVI.Text = text;
+        }
+
+        private void MonitorAndJoinRunningProcess()
+        {
+            while (isTabpageFocused())
+            {
+                Thread.Sleep(500);
+                lock (RunningProcesses)
+                {
+                    if (RunningProcesses.Count < numupdonwn_Parallel_Process.Value)
+                    {
+                        ListViewItem LVI = getFirstPendingListViewItem();
+                        if (LVI == null) continue;
+                        Thread T = new Thread(() => ProcessFile(new MovieFile(LVI.SubItems[1].Text), false));
+                        RunningProcesses.Add(T);
+                        setListViewItemText(LVI, "Started");
+                        T.Start();
+                    }
+                }
+            }
+        }
+
+        private void MonitorAndRemoveRunningProcess()
+        {
+            while (isTabpageFocused())
+            {
+                Thread.Sleep(500);
+                lock (RunningProcesses)
+                {
+                    for (int i = 0; i < RunningProcesses.Count; i++)
+                    {
+                        if (!RunningProcesses[i].IsAlive)
+                            RunningProcesses.RemoveAt(i);
+                    }
+                }
+            }
         }
 
         public void OutputAudioTracksInfoToGridview(List<AudioTrackInfo> InfoList)
@@ -56,7 +157,7 @@ namespace AudioDemuxer
                         foreach (AudioTrackInfo Info in File.AudioTrackInfoList)
                             TrackID_SourceFileName.Add(Info.TrackID, File.FileName);
                     }
-                    txt_CommandLine.Text = AudioDemuxer.Tools.MP4Box.CommandBuilder(TrackID_SourceFileName);
+                    //txt_CommandLine.Text = AudioDemuxer.Tools.MP4Box.CommandBuilder(TrackID_SourceFileName);
                     DP = new Tools.MP4Box.MP4DemuxProcess(TrackID_SourceFileName);
                     DP.Start();
                     DP.Dispose();
@@ -76,7 +177,7 @@ namespace AudioDemuxer
                         foreach (AudioTrackInfo Info in File.AudioTrackInfoList)
                             TrackID_OutputFileName.Add(Info.TrackID, String.Format("{0}\\{1}-track{2}.{3}", File.FileFolder, File.SafeFileNameWithoutExtension, Info.TrackID, Info.Format.ToLower()));
                     }
-                    txt_CommandLine.Text = AudioDemuxer.Tools.MKVExtract.CommandBuilder(TrackID_OutputFileName, File.FileName);
+                    //txt_CommandLine.Text = AudioDemuxer.Tools.MKVExtract.CommandBuilder(TrackID_OutputFileName, File.FileName);
                     DP = new Tools.MKVExtract.MKVDemuxProcess(TrackID_OutputFileName, File.FileName);
                     DP.Start();
                     DP.Dispose();
@@ -97,9 +198,9 @@ namespace AudioDemuxer
                     else
                     {
                         foreach (AudioTrackInfo Info in File.AudioTrackInfoList)
-                            TrackID_OutputFileName.Add(Info.Index.ToString(), String.Format("{0}\\{1}-track{2}.{3}", File.FileFolder, File.SafeFileNameWithoutExtension, Info.Index.ToString(), OutputFormat));
+                            TrackID_OutputFileName.Add((Info.Index + File.VideoTracksCount + 1).ToString(), String.Format("{0}\\{1}-track{2}.{3}", File.FileFolder, File.SafeFileNameWithoutExtension, (Info.Index + File.VideoTracksCount + 1).ToString(), OutputFormat));
                     }
-                    txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.CommandBuilder(TrackID_OutputFileName, File.FileName);
+                    //txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.CommandBuilder(TrackID_OutputFileName, File.FileName);
                     //txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.AnalyseByEac3to(nowFile.FileName);
                     DP = new Tools.eac3to.M2TSDemuxProcess(TrackID_OutputFileName, File.FileName);
                     DP.Start();
@@ -121,20 +222,17 @@ namespace AudioDemuxer
                     else
                     {
                         foreach (AudioTrackInfo Info in File.AudioTrackInfoList)
-                            TrackID_OutputFileName.Add(Info.Index.ToString(), String.Format("{0}\\{1}-track{2}.{3}", File.FileFolder, File.SafeFileNameWithoutExtension, Info.Index.ToString(), Info.Format.ToLower()));
+                            TrackID_OutputFileName.Add((Info.Index + File.VideoTracksCount + 1).ToString(), String.Format("{0}\\{1}-track{2}.{3}", File.FileFolder, File.SafeFileNameWithoutExtension, (Info.Index + File.VideoTracksCount + 1).ToString(), Info.Format.ToLower()));
                     }
-                    txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.CommandBuilder(TrackID_OutputFileName, File.FileName);
+                    //txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.CommandBuilder(TrackID_OutputFileName, File.FileName);
                     //txt_CommandLine.Text = AudioDemuxer.Tools.eac3to.AnalyseByEac3to(nowFile.FileName);
                     DP = new Tools.eac3to.TSDemuxProcess(TrackID_OutputFileName, File.FileName);
                     DP.Start();
                     DP.Dispose();
                     break;
             }
-        }
-
-        public form_MainWindow()
-        {
-            InitializeComponent();
+            if (Thread.CurrentThread != MainThread)
+            { Thread.Sleep(3000); Thread.CurrentThread.Abort(); }
         }
 
         private void btn_Browse_Click(object sender, EventArgs e)
@@ -151,6 +249,33 @@ namespace AudioDemuxer
         private void btn_Start_Click(object sender, EventArgs e)
         {
             ProcessFile(nowFile, true);
+        }
+
+        private void lv_WaitingFileList_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.All;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        private void lv_WaitingFileList_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] DragDropFiles = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            foreach (string File in DragDropFiles)
+            {
+                MovieFile tempFile = new MovieFile(File);
+                foreach(string SupportedFileFormat in SupportedFileFormats)
+                {
+                    if (SupportedFileFormat.Equals(tempFile.FileExtension.ToUpper()))
+                    {
+                        ListViewItem LVI = new ListViewItem("Pending");
+                        LVI.SubItems.Add(File);
+                        lv_WaitingFileList.Items.Add(LVI);
+                    }
+                }
+            }
+            lv_WaitingFileList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
     }
 }
