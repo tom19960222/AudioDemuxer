@@ -28,23 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            "Running",
+            "C:\\temp\\test.mp4"}, -1);
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabpage_SingleFileDemuxWithChoose = new System.Windows.Forms.TabPage();
             this.gridview_Tracks = new System.Windows.Forms.DataGridView();
+            this.WantToDemux = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.TrackNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Format = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BitDepth = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Channels = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txt_CommandLine = new System.Windows.Forms.TextBox();
             this.label_CommandLine = new System.Windows.Forms.Label();
             this.btn_Start = new System.Windows.Forms.Button();
             this.btn_Browse = new System.Windows.Forms.Button();
             this.tabpage_BatchDemuxAll = new System.Windows.Forms.TabPage();
             this.OFD_InputFile = new System.Windows.Forms.OpenFileDialog();
-            this.WantToDemux = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.TrackNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Format = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BitDepth = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Channels = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numupdonwn_Parallel_Process = new System.Windows.Forms.NumericUpDown();
+            this.label__Parallel_Process = new System.Windows.Forms.Label();
+            this.lv_WaitingFileList = new System.Windows.Forms.ListView();
+            this.lvheader_Status = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvheader_FileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl.SuspendLayout();
             this.tabpage_SingleFileDemuxWithChoose.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridview_Tracks)).BeginInit();
+            this.tabpage_BatchDemuxAll.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numupdonwn_Parallel_Process)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl
@@ -100,62 +110,6 @@
             this.gridview_Tracks.Size = new System.Drawing.Size(674, 192);
             this.gridview_Tracks.TabIndex = 5;
             // 
-            // txt_CommandLine
-            // 
-            this.txt_CommandLine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txt_CommandLine.Location = new System.Drawing.Point(56, 233);
-            this.txt_CommandLine.Name = "txt_CommandLine";
-            this.txt_CommandLine.Size = new System.Drawing.Size(627, 22);
-            this.txt_CommandLine.TabIndex = 4;
-            // 
-            // label_CommandLine
-            // 
-            this.label_CommandLine.AutoSize = true;
-            this.label_CommandLine.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label_CommandLine.Location = new System.Drawing.Point(9, 236);
-            this.label_CommandLine.Name = "label_CommandLine";
-            this.label_CommandLine.Size = new System.Drawing.Size(49, 14);
-            this.label_CommandLine.TabIndex = 3;
-            this.label_CommandLine.Text = "指令：";
-            // 
-            // btn_Start
-            // 
-            this.btn_Start.Location = new System.Drawing.Point(90, 6);
-            this.btn_Start.Name = "btn_Start";
-            this.btn_Start.Size = new System.Drawing.Size(75, 23);
-            this.btn_Start.TabIndex = 1;
-            this.btn_Start.Text = "開始";
-            this.btn_Start.UseVisualStyleBackColor = true;
-            this.btn_Start.Click += new System.EventHandler(this.btn_Start_Click);
-            // 
-            // btn_Browse
-            // 
-            this.btn_Browse.Location = new System.Drawing.Point(9, 6);
-            this.btn_Browse.Name = "btn_Browse";
-            this.btn_Browse.Size = new System.Drawing.Size(75, 23);
-            this.btn_Browse.TabIndex = 1;
-            this.btn_Browse.Text = "瀏覽";
-            this.btn_Browse.UseVisualStyleBackColor = true;
-            this.btn_Browse.Click += new System.EventHandler(this.btn_Browse_Click);
-            // 
-            // tabpage_BatchDemuxAll
-            // 
-            this.tabpage_BatchDemuxAll.Location = new System.Drawing.Point(4, 22);
-            this.tabpage_BatchDemuxAll.Name = "tabpage_BatchDemuxAll";
-            this.tabpage_BatchDemuxAll.Padding = new System.Windows.Forms.Padding(3);
-            this.tabpage_BatchDemuxAll.Size = new System.Drawing.Size(693, 346);
-            this.tabpage_BatchDemuxAll.TabIndex = 1;
-            this.tabpage_BatchDemuxAll.Text = "批次全解";
-            this.tabpage_BatchDemuxAll.UseVisualStyleBackColor = true;
-            // 
-            // OFD_InputFile
-            // 
-            this.OFD_InputFile.Filter = "所有支援格式 (*.mp4, *.mkv, *.m2ts, *.ts)|*.mp4;*.mkv;*.m2ts;*.ts|MP4檔 (*.mp4)|*.mp4|MK" +
-    "V檔 (*.mkv)|*.mkv|M2TS / TS檔 (*.m2ts, *.ts)|*.m2ts;*.ts";
-            this.OFD_InputFile.RestoreDirectory = true;
-            this.OFD_InputFile.FileOk += new System.ComponentModel.CancelEventHandler(this.OFD_InputFile_FileOk);
-            // 
             // WantToDemux
             // 
             this.WantToDemux.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
@@ -195,6 +149,111 @@
             this.Channels.ReadOnly = true;
             this.Channels.Width = 73;
             // 
+            // txt_CommandLine
+            // 
+            this.txt_CommandLine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_CommandLine.Location = new System.Drawing.Point(56, 233);
+            this.txt_CommandLine.Name = "txt_CommandLine";
+            this.txt_CommandLine.Size = new System.Drawing.Size(627, 22);
+            this.txt_CommandLine.TabIndex = 4;
+            // 
+            // label_CommandLine
+            // 
+            this.label_CommandLine.AutoSize = true;
+            this.label_CommandLine.Font = new System.Drawing.Font("PMingLiU", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label_CommandLine.Location = new System.Drawing.Point(9, 236);
+            this.label_CommandLine.Name = "label_CommandLine";
+            this.label_CommandLine.Size = new System.Drawing.Size(49, 14);
+            this.label_CommandLine.TabIndex = 3;
+            this.label_CommandLine.Text = "指令：";
+            // 
+            // btn_Start
+            // 
+            this.btn_Start.Location = new System.Drawing.Point(90, 6);
+            this.btn_Start.Name = "btn_Start";
+            this.btn_Start.Size = new System.Drawing.Size(75, 23);
+            this.btn_Start.TabIndex = 1;
+            this.btn_Start.Text = "開始";
+            this.btn_Start.UseVisualStyleBackColor = true;
+            this.btn_Start.Click += new System.EventHandler(this.btn_Start_Click);
+            // 
+            // btn_Browse
+            // 
+            this.btn_Browse.Location = new System.Drawing.Point(9, 6);
+            this.btn_Browse.Name = "btn_Browse";
+            this.btn_Browse.Size = new System.Drawing.Size(75, 23);
+            this.btn_Browse.TabIndex = 1;
+            this.btn_Browse.Text = "瀏覽";
+            this.btn_Browse.UseVisualStyleBackColor = true;
+            this.btn_Browse.Click += new System.EventHandler(this.btn_Browse_Click);
+            // 
+            // tabpage_BatchDemuxAll
+            // 
+            this.tabpage_BatchDemuxAll.AllowDrop = true;
+            this.tabpage_BatchDemuxAll.Controls.Add(this.numupdonwn_Parallel_Process);
+            this.tabpage_BatchDemuxAll.Controls.Add(this.label__Parallel_Process);
+            this.tabpage_BatchDemuxAll.Controls.Add(this.lv_WaitingFileList);
+            this.tabpage_BatchDemuxAll.Location = new System.Drawing.Point(4, 22);
+            this.tabpage_BatchDemuxAll.Name = "tabpage_BatchDemuxAll";
+            this.tabpage_BatchDemuxAll.Padding = new System.Windows.Forms.Padding(3);
+            this.tabpage_BatchDemuxAll.Size = new System.Drawing.Size(693, 346);
+            this.tabpage_BatchDemuxAll.TabIndex = 1;
+            this.tabpage_BatchDemuxAll.Text = "批次全解";
+            this.tabpage_BatchDemuxAll.UseVisualStyleBackColor = true;
+            // 
+            // OFD_InputFile
+            // 
+            this.OFD_InputFile.Filter = "所有支援格式 (*.mp4, *.mkv, *.m2ts, *.ts)|*.mp4;*.mkv;*.m2ts;*.ts|MP4檔 (*.mp4)|*.mp4|MK" +
+    "V檔 (*.mkv)|*.mkv|M2TS / TS檔 (*.m2ts, *.ts)|*.m2ts;*.ts";
+            this.OFD_InputFile.RestoreDirectory = true;
+            this.OFD_InputFile.FileOk += new System.ComponentModel.CancelEventHandler(this.OFD_InputFile_FileOk);
+            // 
+            // numupdonwn_Parallel_Process
+            // 
+            this.numupdonwn_Parallel_Process.Location = new System.Drawing.Point(653, 0);
+            this.numupdonwn_Parallel_Process.Name = "numupdonwn_Parallel_Process";
+            this.numupdonwn_Parallel_Process.Size = new System.Drawing.Size(40, 22);
+            this.numupdonwn_Parallel_Process.TabIndex = 0;
+            this.numupdonwn_Parallel_Process.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numupdonwn_Parallel_Process.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label__Parallel_Process
+            // 
+            this.label__Parallel_Process.AutoSize = true;
+            this.label__Parallel_Process.Location = new System.Drawing.Point(546, 6);
+            this.label__Parallel_Process.Name = "label__Parallel_Process";
+            this.label__Parallel_Process.Size = new System.Drawing.Size(101, 12);
+            this.label__Parallel_Process.TabIndex = 1;
+            this.label__Parallel_Process.Text = "同時執行程序數：";
+            // 
+            // lv_WaitingFileList
+            // 
+            this.lv_WaitingFileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lvheader_Status,
+            this.lvheader_FileName});
+            this.lv_WaitingFileList.GridLines = true;
+            this.lv_WaitingFileList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1});
+            this.lv_WaitingFileList.Location = new System.Drawing.Point(0, 21);
+            this.lv_WaitingFileList.Name = "lv_WaitingFileList";
+            this.lv_WaitingFileList.Size = new System.Drawing.Size(687, 236);
+            this.lv_WaitingFileList.TabIndex = 2;
+            this.lv_WaitingFileList.UseCompatibleStateImageBehavior = false;
+            this.lv_WaitingFileList.View = System.Windows.Forms.View.Details;
+            // 
+            // lvheader_Status
+            // 
+            this.lvheader_Status.Text = "狀態";
+            // 
+            // lvheader_FileName
+            // 
+            this.lvheader_FileName.Text = "檔案路徑";
+            // 
             // form_MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -207,6 +266,9 @@
             this.tabpage_SingleFileDemuxWithChoose.ResumeLayout(false);
             this.tabpage_SingleFileDemuxWithChoose.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridview_Tracks)).EndInit();
+            this.tabpage_BatchDemuxAll.ResumeLayout(false);
+            this.tabpage_BatchDemuxAll.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numupdonwn_Parallel_Process)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -227,6 +289,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Format;
         private System.Windows.Forms.DataGridViewTextBoxColumn BitDepth;
         private System.Windows.Forms.DataGridViewTextBoxColumn Channels;
+        private System.Windows.Forms.NumericUpDown numupdonwn_Parallel_Process;
+        private System.Windows.Forms.Label label__Parallel_Process;
+        private System.Windows.Forms.ListView lv_WaitingFileList;
+        private System.Windows.Forms.ColumnHeader lvheader_Status;
+        private System.Windows.Forms.ColumnHeader lvheader_FileName;
 
     }
 }

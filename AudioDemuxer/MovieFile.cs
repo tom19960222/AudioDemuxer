@@ -4,17 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MediaInfoLib;
+using AudioDemuxer;
 
 namespace AudioDemuxer
 {
-    class MovieFile
+    public class MovieFile
     {
-        MediaInfo MI;
+        private MediaInfo MI;
+        public List<AudioTrackInfo> AudioTrackInfoList;
         public MovieFile(string FilePath)
         {
             MI = new MediaInfo();
             MI.Open(FilePath);
             _FileName = FilePath;
+            AudioTrackInfoList = AnalyzeFile(this);
         }
         private string _FileName;
         public string FileName
@@ -68,6 +71,19 @@ namespace AudioDemuxer
         public string getTrackID(StreamKind Format, int Nth)
         {
             return MI.getTrackID(Format, Nth);
+        }
+
+        public List<AudioTrackInfo> AnalyzeFile(MovieFile File)
+        {
+            List<AudioTrackInfo> TrackInfoList = new List<AudioTrackInfo>();
+
+            for (int i = 0; i < File.AudioTracksCount; i++)
+            {
+                AudioTrackInfo Info = new AudioTrackInfo(File.getTrackID(StreamKind.Audio, i), File.getAudioTrackFormat(i), File.getAudioBitDepth(i), File.getAudioChannels(i), i + File.VideoTracksCount + 1);
+                TrackInfoList.Add(Info);
+            }
+
+            return TrackInfoList;
         }
     }
 }

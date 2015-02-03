@@ -11,15 +11,15 @@ namespace AudioDemuxer
 
     public abstract class DemuxProcessUsingOneCommand : IDemuxProcess
     {
-        protected Process P;
+        protected Process Pro;
         public void Start()
         {
-            P.Start();
-            P.WaitForExit();
+            Pro.Start();
+            Pro.WaitForExit();
         }
         public void Dispose()
         {
-            P.Dispose();
+            Pro.Dispose();
         }
     }
 

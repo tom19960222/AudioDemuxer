@@ -66,9 +66,9 @@ namespace AudioDemuxer
             {
                 public MKVDemuxProcess(ListDictionary TrackID_OutputFileName_Pair, string SourceFileName)
                 {
-                    P = new Process();
-                    P.StartInfo.FileName = ProgramPath;
-                    P.StartInfo.Arguments = ParameterBuilder(TrackID_OutputFileName_Pair, SourceFileName);
+                    Pro = new Process();
+                    Pro.StartInfo.FileName = ProgramPath;
+                    Pro.StartInfo.Arguments = ParameterBuilder(TrackID_OutputFileName_Pair, SourceFileName);
                 }
             }
         }
@@ -93,18 +93,18 @@ namespace AudioDemuxer
             {
                 public M2TSDemuxProcess(ListDictionary TrackID_OutputFileName_Pair, string SourceFileName)
                 {
-                    P = new Process();
-                    P.StartInfo.FileName = ProgramPath;
-                    P.StartInfo.Arguments = ParameterBuilder(TrackID_OutputFileName_Pair, SourceFileName);
+                    Pro = new Process();
+                    Pro.StartInfo.FileName = ProgramPath;
+                    Pro.StartInfo.Arguments = ParameterBuilder(TrackID_OutputFileName_Pair, SourceFileName);
                 }
             }
             public class TSDemuxProcess : DemuxProcessUsingOneCommand, IDemuxProcess
             {
                 public TSDemuxProcess(ListDictionary TrackID_OutputFileName_Pair, string SourceFileName)
                 {
-                    P = new Process();
-                    P.StartInfo.FileName = ProgramPath;
-                    P.StartInfo.Arguments = ParameterBuilder(TrackID_OutputFileName_Pair, SourceFileName);
+                    Pro = new Process();
+                    Pro.StartInfo.FileName = ProgramPath;
+                    Pro.StartInfo.Arguments = ParameterBuilder(TrackID_OutputFileName_Pair, SourceFileName);
                 }
             }
 
